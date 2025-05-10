@@ -82,7 +82,7 @@ services:
     container_name: grafana_redis
     healthcheck:
       test: redis-cli ping || exit 1
-    image: redis:7.4.3-alpine3.21@sha256:f773b35a95e170d92dd4214a3ec4859b1b7960bf56896ae687646d695f311187
+    image: valkey/valkey:8.1.1-bookworm@sha256:ff21bc0f8194dc9c105b769aeabf9585fea6a8ed649c0781caeac5cb3c247884
     restart: always
     volumes:
       - /opt/grafana/redis:/data
