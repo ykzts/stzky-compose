@@ -1,0 +1,38 @@
+prometheus.scrape "immich_api" {
+  forward_to      = [prometheus.remote_write.default.receiver]
+  job_name        = "immich_api"
+  scrape_interval = "15s"
+  targets         = [
+    {"__address__" = "immich-server:8081", group = "immich", service = "immich-api"},
+  ]
+}
+
+prometheus.scrape "immich_microservices" {
+  forward_to      = [prometheus.remote_write.default.receiver]
+  job_name        = "immich_microservices"
+  scrape_interval = "15s"
+  targets         = [
+    {"__address__" = "immich-server:8082", group = "immich", service = "immich-microservices"},
+  ]
+}
+
+prometheus.scrape "alloy" {
+  forward_to      = [prometheus.remote_write.default.receiver]
+  job_name        = "alloy"
+  scrape_interval = "15s"
+  targets         = [
+    {"__address__" = "localhost:12345", group = "infrastructure", service = "alloy"},
+  ]
+}
+
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = "https://prometheus.stzky.com/api/v1/write"
+
+    basic_auth {
+      username = sys.env("ALLOY_PROMETHEUS_USERNAME")
+      password = sys.env("ALLOY_PROMETHEUS_PASSWORD")
+    }
+  }
+}

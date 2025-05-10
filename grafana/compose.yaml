@@ -1,0 +1,80 @@
+services:
+  database:
+    container_name: grafana_postgres
+    environment:
+      POSTGRES_DB: ${GF_DATABASE_NAME}
+      POSTGRES_PASSWORD: ${GF_DATABASE_PASSWORD}
+      POSTGRES_USER: ${GF_DATABASE_USER}
+    healthcheck:
+      test: pg_isready -U postgres
+    image: postgres:17.4-bookworm@sha256:304ab813518754228f9f792f79d6da36359b82d8ecf418096c636725f8c930ad
+    restart: always
+    volumes:
+      - /opt/grafana/postgres:/var/lib/postgresql/data
+
+  grafana:
+    container_name: grafana
+    depends_on:
+      database:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    environment:
+      - GF_AUTH_DISABLE_LOGIN_FORM=true
+      - GF_SECURITY_COOKIE_SECURE=true
+      - GF_SECURITY_COOKIE_SAMESITE=Strict
+      - GF_SECURITY_CONTENT_SECURITY_POLICY=true
+      - GF_SERVER_DOMAIN=graph.stzky.com
+      - GF_SERVER_ROOT_URL=https://graph.stzky.com
+      - GF_SNAPSHOTS_EXTERNAL_ENABLED=false
+      - GF_USERS_DEFAULT_THEME=system
+    image: grafana/grafana:12.0.0@sha256:263cbefd5d9b179893c47c415daab4da5c1f3d6770154741eca4f45c81119884
+    ports:
+      - 127.0.0.1:3000:3000
+    restart: always
+    user: '0'
+    volumes:
+      - /opt/grafana/grafana:/var/lib/grafana
+
+  node-exporter:
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)'
+    container_name: node_exporter
+    image: prom/node-exporter:v1.9.1@sha256:d00a542e409ee618a4edc67da14dd48c5da66726bbd5537ab2af9c1dfc442c8a
+    pid: host
+    restart: always
+    volumes:
+      - /:/rootfs:ro
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+
+  prometheus:
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --web.enable-lifecycle
+      - --web.enable-remote-write-receiver
+    container_name: prometheus
+    image: prom/prometheus:v3.3.1@sha256:e2b8aa62b64855956e3ec1e18b4f9387fb6203174a4471936f4662f437f04405
+    ports:
+      - 127.0.0.1:9090:9090
+    volumes:
+      - /opt/grafana/config/prometheus:/etc/prometheus
+      - /opt/grafana/prometheus:/prometheus
+
+  redis:
+    container_name: grafana_redis
+    healthcheck:
+      test: redis-cli ping || exit 1
+    image: redis:7.4.2-alpine3.21@sha256:02419de7eddf55aa5bcf49efb74e88fa8d931b4d77c07eff8a6b2144472b6952
+    restart: always
+    volumes:
+      - /opt/grafana/redis:/data
+
+  snmp-exporter:
+    container_name: snmp_exporter
+    image: prom/snmp-exporter:v0.29.0@sha256:272ff087c314fb1e384b7ba7e555f020cc0c072fb23f0dc1d1cb51b48067efdc
+    restart: always
