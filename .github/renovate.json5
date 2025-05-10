@@ -5,4 +5,12 @@
     ':automergeDisabled',
     'customManagers:dockerfileVersions',
   ],
+  packageRules: [
+    {
+      groupName: 'immich docker containers',
+      groupSlug: 'immich',
+      matchDatasources: ['docker'],
+      matchPackageNames: ['ghcr.io/immich-app/**'],
+    },
+  ],
 }
