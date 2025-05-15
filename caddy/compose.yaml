@@ -1,0 +1,36 @@
+services:
+  alloy:
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - /etc/alloy/config.alloy
+    container_name: caddy_alloy
+    environment:
+      - ALLOY_PROMETHEUS_PASSWORD=${ALLOY_PROMETHEUS_PASSWORD}
+      - ALLOY_PROMETHEUS_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
+    image: grafana/alloy:v1.8.3@sha256:ab04df3936e4d71d31b6f55e0c58a7e749091f59635dd8c2bc731ba1b6c93701
+    restart: always
+    volumes:
+      - ./config/alloy:/etc/alloy
+
+  caddy:
+    cap_add:
+      - NET_ADMIN
+    container_name: caddy
+    environment:
+      - PROMETHEUS_HASHED_PASSWORD=${PROMETHEUS_HASHED_PASSWORD}
+      - PROMETHEUS_AUTH_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
+    image: caddy:2.10.0@sha256:30ccf0cb027e1d06cd6e453c04fc1c8eec665629b22ed69602c14c8a0512ead0
+    ports:
+      - 443:443
+      - 443:443/udp
+      - 80:80
+    restart: always
+    volumes:
+      - caddy_config:/config
+      - caddy_data:/data
+      - ./config/caddy:/etc/caddy
+
+volumes:
+  caddy_config:
+  caddy_data:
