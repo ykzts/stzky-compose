@@ -11,7 +11,7 @@ services:
       - ALLOY_PROMETHEUS_PASSWORD=${ALLOY_PROMETHEUS_PASSWORD}
       - ALLOY_PROMETHEUS_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
     image: grafana/alloy:v1.8.3@sha256:ab04df3936e4d71d31b6f55e0c58a7e749091f59635dd8c2bc731ba1b6c93701
-    restart: unless-stopped
+    restart: always
     volumes:
       - ./config/alloy:/etc/alloy
 
@@ -46,7 +46,7 @@ services:
     healthcheck:
       disable: false
     image: ghcr.io/immich-app/immich-machine-learning:v1.132.3-openvino@sha256:faf4208b1f49e3b943583f4546d9bc72e6101d6b97c1959db8212db84a49ad11
-    restart: unless-stopped
+    restart: always
     volumes:
       - /dev/bus/usb:/dev/bus/usb
       - model-cache:/cache
@@ -78,7 +78,7 @@ services:
     healthcheck:
       test: redis-cli ping || exit 1
     image: valkey/valkey:8.1.1-bookworm@sha256:ff21bc0f8194dc9c105b769aeabf9585fea6a8ed649c0781caeac5cb3c247884
-    restart: unless-stopped
+    restart: always
 
 volumes:
   model-cache:
