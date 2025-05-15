@@ -21,7 +21,7 @@ console.stzky.com {
 
 	import secure-headers
 
-	reverse_proxy
+	reverse_proxy host.docker.internal:9000
 }
 
 graph.stzky.com {
@@ -34,7 +34,7 @@ graph.stzky.com {
 		Referrer-Policy no-referrer
 	}
 
-	reverse_proxy :3000
+	reverse_proxy host.docker.internal:3000
 }
 
 photos.stzky.com {
@@ -49,7 +49,7 @@ photos.stzky.com {
 		-X-Powered-By
 	}
 
-	reverse_proxy :2283
+	reverse_proxy host.docker.internal:2283
 }
 
 prometheus.stzky.com {
@@ -61,5 +61,5 @@ prometheus.stzky.com {
 
 	import secure-headers
 
-	reverse_proxy :9090
+	reverse_proxy host.docker.internal:9090
 }
