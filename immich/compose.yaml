@@ -21,7 +21,7 @@ services:
     container_name: immich_postgres
     environment:
       POSTGRES_DB: ${DB_DATABASE_NAME}
-      POSTGRES_INITDB_ARGS: '--data-checksums'
+      POSTGRES_INITDB_ARGS: --data-checksums
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
     healthcheck:
@@ -38,7 +38,7 @@ services:
   immich-machine-learning:
     container_name: immich_machine_learning
     device_cgroup_rules:
-      - 'c 189:* rmw'
+      - c 189:* rmw
     devices:
       - /dev/dri:/dev/dri
     environment:
@@ -67,7 +67,7 @@ services:
       disable: false
     image: ghcr.io/immich-app/immich-server:v1.132.3@sha256:6680d88486251b0264a78a1934fe82eef875555aa6d84d703a0980328a5d5c31
     ports:
-      - '127.0.0.1:2283:2283'
+      - 2283:2283
     restart: always
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
