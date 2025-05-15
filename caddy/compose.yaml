@@ -20,9 +20,8 @@ services:
     environment:
       - PROMETHEUS_HASHED_PASSWORD=${PROMETHEUS_HASHED_PASSWORD}
       - PROMETHEUS_AUTH_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
-    extra_hosts:
-      - host.docker.internal:host-gateway
     image: caddy:2.10.0@sha256:30ccf0cb027e1d06cd6e453c04fc1c8eec665629b22ed69602c14c8a0512ead0
+    network_mode: host
     ports:
       - 443:443
       - 443:443/udp
