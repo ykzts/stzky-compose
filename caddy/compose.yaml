@@ -9,6 +9,7 @@ services:
       - ALLOY_PROMETHEUS_PASSWORD=${ALLOY_PROMETHEUS_PASSWORD}
       - ALLOY_PROMETHEUS_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
     image: grafana/alloy:v1.8.3@sha256:ab04df3936e4d71d31b6f55e0c58a7e749091f59635dd8c2bc731ba1b6c93701
+    pid: service:caddy
     restart: always
     volumes:
       - ./config/alloy:/etc/alloy:ro

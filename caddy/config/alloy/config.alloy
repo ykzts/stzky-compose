@@ -3,7 +3,7 @@ prometheus.scrape "caddy_metrics" {
   job_name        = "caddy"
   scrape_interval = "15s"
   targets         = [
-    {"__address__" = "caddy:2019"},
+    {"__address__" = "localhost:2019"},
   ]
 }
 
