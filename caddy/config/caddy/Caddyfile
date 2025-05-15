@@ -1,6 +1,4 @@
 {
-	admin :2019
-
 	metrics {
 		per_host
 	}
