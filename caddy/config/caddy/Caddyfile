@@ -9,6 +9,8 @@
 		Cross-Origin-Embedder-Policy require-cors
 		Cross-Origin-Opener-Policy same-origin
 		Cross-Origin-Resource-Policy same-origin
+		Permissions-Policy "camera=(), display-capture=(), geolocation=(), microphone=()"
+		Referrer-Policy no-referrer
 		Strict-Transport-Security max-age=31536000
 		X-Content-Type-Options nosniff
 		X-Frame-Options DENY
@@ -17,49 +19,39 @@
 }
 
 console.stzky.com {
-	encode zstd gzip
-
 	import secure-headers
 
+	encode zstd gzip
 	reverse_proxy :9000
 }
 
 graph.stzky.com {
-	encode zstd gzip
-
 	import secure-headers
 
+	encode zstd gzip
 	header {
-		Permissions-Policy "camera=(), display-capture=(), geolocation=(), microphone=()"
-		Referrer-Policy no-referrer
 	}
-
 	reverse_proxy :3000
 }
 
 photos.stzky.com {
-	encode zstd gzip
-
 	import secure-headers
 
+	encode zstd gzip
 	header {
 		Content-Security-Policy "base-uri 'self'; connect-src 'self' https://pay.futo.org https://static.immich.cloud https://tiles.immich.cloud; default-src 'none'; font-src 'self'; frame-ancestors 'none'; img-src 'self' data: blob:; manifest-src 'self'; media-src 'self'; sandbox allow-downloads allow-forms allow-modals allow-popups allow-same-origin allow-scripts; script-src 'self' 'unsafe-inline'; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; worker-src 'self' blob:"
 		Permissions-Policy "camera=(), display-capture=(), geolocation=(self), microphone=()"
-		Referrer-Policy no-referrer
 		-X-Powered-By
 	}
-
 	reverse_proxy :2283
 }
 
 prometheus.stzky.com {
+	import secure-headers
+
 	basic_auth {
 		{$PROMETHEUS_AUTH_USERNAME} {$PROMETHEUS_HASHED_PASSWORD}
 	}
-
 	encode zstd gzip
-
-	import secure-headers
-
 	reverse_proxy :9090
 }
