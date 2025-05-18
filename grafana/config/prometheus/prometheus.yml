@@ -3,10 +3,6 @@ global:
 
 scrape_configs:
   - static_configs:
-      - targets: ['localhost:2019']
-    job_name: caddy
-
-  - static_configs:
       - targets: ['grafana:3000']
     job_name: grafana
 

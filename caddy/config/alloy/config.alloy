@@ -1,0 +1,19 @@
+prometheus.scrape "caddy_metrics" {
+  forward_to      = [prometheus.remote_write.default.receiver]
+  job_name        = "caddy"
+  scrape_interval = "15s"
+  targets         = [
+    {"__address__" = "localhost:2019"},
+  ]
+}
+
+prometheus.remote_write "default" {
+  endpoint {
+    url = "https://prometheus.stzky.com/api/v1/write"
+
+    basic_auth {
+      username = sys.env("ALLOY_PROMETHEUS_USERNAME")
+      password = sys.env("ALLOY_PROMETHEUS_PASSWORD")
+    }
+  }
+}
