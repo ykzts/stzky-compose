@@ -1,4 +1,19 @@
 services:
+  alloy:
+    command:
+      - run
+      - --server.http.listen-addr=0.0.0.0:12345
+      - /etc/alloy/config.alloy
+    container_name: caddy_alloy
+    environment:
+      - ALLOY_PROMETHEUS_PASSWORD=${ALLOY_PROMETHEUS_PASSWORD}
+      - ALLOY_PROMETHEUS_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
+    image: grafana/alloy:v1.8.3@sha256:ab04df3936e4d71d31b6f55e0c58a7e749091f59635dd8c2bc731ba1b6c93701
+    network_mode: host
+    restart: always
+    volumes:
+      - ./config/alloy:/etc/alloy:ro
+
   database:
     container_name: grafana_postgres
     environment:
