@@ -1,20 +1,6 @@
 name: immich
 
 services:
-  alloy:
-    command:
-      - run
-      - --server.http.listen-addr=0.0.0.0:12345
-      - /etc/alloy/config.alloy
-    container_name: immich_alloy
-    environment:
-      - ALLOY_PROMETHEUS_PASSWORD=${ALLOY_PROMETHEUS_PASSWORD}
-      - ALLOY_PROMETHEUS_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
-    image: grafana/alloy:v1.8.3@sha256:ab04df3936e4d71d31b6f55e0c58a7e749091f59635dd8c2bc731ba1b6c93701
-    restart: always
-    volumes:
-      - ./config/alloy:/etc/alloy
-
   database:
     command: >-
       postgres -c shared_preload_libraries=vectors.so -c 'search_path="$$user", public, vectors' -c logging_collector=on -c max_wal_size=2GB -c shared_buffers=512MB -c wal_compression=on
@@ -68,6 +54,8 @@ services:
     image: ghcr.io/immich-app/immich-server:v1.132.3@sha256:6680d88486251b0264a78a1934fe82eef875555aa6d84d703a0980328a5d5c31
     ports:
       - 127.0.0.1:2283:2283
+      - 127.0.0.1:8081:8081
+      - 127.0.0.1:8082:8002
     restart: always
     volumes:
       - ${UPLOAD_LOCATION}:/usr/src/app/upload
