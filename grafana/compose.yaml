@@ -4,7 +4,7 @@ services:
       - run
       - --server.http.listen-addr=0.0.0.0:12345
       - /etc/alloy/config.alloy
-    container_name: caddy_alloy
+    container_name: alloy
     environment:
       - ALLOY_PROMETHEUS_PASSWORD=${ALLOY_PROMETHEUS_PASSWORD}
       - ALLOY_PROMETHEUS_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
