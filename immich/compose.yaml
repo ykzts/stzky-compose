@@ -15,7 +15,7 @@ services:
       start_period: 5m
       test: >-
         pg_isready --dbname="$${POSTGRES_DB}" --username="$${POSTGRES_USER}" || exit 1; Chksum="$$(psql --dbname="$${POSTGRES_DB}" --username="$${POSTGRES_USER}" --tuples-only --no-align --command='SELECT COALESCE(SUM(checksum_failures), 0) FROM pg_stat_database')"; echo "checksum failure count is $$Chksum"; [ "$$Chksum" = '0' ] || exit 1
-    image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0-pgvector0.8.0-pgvectors0.3.0@sha256:0e4c556edc572501debddaf6d155dc2199de3339489668228550d83faca03a52
+    image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0-pgvector0.8.0-pgvectors0.3.0@sha256:9369ef7c891e056b03ad2c97318f23ec325a62fa4ab3ebe2ef314ec5944ef372
     restart: always
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
