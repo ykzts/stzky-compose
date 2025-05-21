@@ -2,7 +2,6 @@ name: immich
 
 services:
   database:
-    command: postgres -c config_file=/etc/postgresql/postgresql.ssd.conf
     container_name: immich_postgres
     environment:
       POSTGRES_DB: ${DB_DATABASE_NAME}
