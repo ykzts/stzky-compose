@@ -40,7 +40,6 @@ services:
       - DB_DATABASE_NAME=${DB_DATABASE_NAME}
       - DB_PASSWORD=${DB_PASSWORD}
       - DB_USERNAME=${DB_USERNAME}
-      - DB_VECTOR_EXTENSION=pgvecto.rs
       - IMMICH_TELEMETRY_INCLUDE=all
     healthcheck:
       disable: false
