@@ -8,7 +8,7 @@ services:
       POSTGRES_INITDB_ARGS: --data-checksums
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
-    image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0@sha256:8641020e4c57c7bbe6e53e2775dd9ac4216b04f6bc8c2a1e4b525b340e960e14
+    image: ghcr.io/immich-app/postgres:16-vectorchord0.3.0@sha256:7d5b41fd5d04c942f4f71fb33600b4f174606bbc9423bdd8c1e0c2d2910da170
     restart: always
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
@@ -43,7 +43,7 @@ services:
       - IMMICH_TELEMETRY_INCLUDE=all
     healthcheck:
       disable: false
-    image: ghcr.io/immich-app/immich-server:v1.133.1@sha256:1daaf09ba61066184aad6e4f524b13e20f8884cb2030c314438e34cce9358b2c
+    image: ghcr.io/immich-app/immich-server:v1.134.0@sha256:073fc04c7e3d18ace466c20763809cf17aa55765ed610f12971b392a6a80b50c
     ports:
       - 127.0.0.1:2283:2283
       - 127.0.0.1:8081:8081
