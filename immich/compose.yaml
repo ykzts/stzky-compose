@@ -23,7 +23,7 @@ services:
       - IMMICH_TELEMETRY_INCLUDE=all
     healthcheck:
       disable: false
-    image: ghcr.io/immich-app/immich-machine-learning:v1.133.1-openvino@sha256:72612583fb3b7b7f0adcc6a1a1766571573f4ff4d2bcc77c6ef28440a444a728
+    image: ghcr.io/immich-app/immich-machine-learning:v1.134.0-openvino@sha256:ec23f98efe6d3b88c600142951eeecbef0056a87844d0f5bea843fd0e29a58e3
     restart: always
     volumes:
       - /dev/bus/usb:/dev/bus/usb
