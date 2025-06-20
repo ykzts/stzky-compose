@@ -8,7 +8,7 @@ services:
       POSTGRES_INITDB_ARGS: --data-checksums
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
-    image: ghcr.io/immich-app/postgres:16-vectorchord0.4.2@sha256:8039c4848cb650e3dd450eaf4e695ab3da65ab6f5be437be70b1d4add999574a
+    image: ghcr.io/immich-app/postgres:16-vectorchord0.4.2@sha256:57b9036777a99ecb166ed5b074e6e08d43b56cb79410171d5ba7c211b15d48f4
     restart: always
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
@@ -23,7 +23,7 @@ services:
       - IMMICH_TELEMETRY_INCLUDE=all
     healthcheck:
       disable: false
-    image: ghcr.io/immich-app/immich-machine-learning:v1.135.0-openvino@sha256:33ff45c9e82391a29fdf259b59fdb29b27861f6b07d3a2d49e43bd99d0f2c6f1
+    image: ghcr.io/immich-app/immich-machine-learning:v1.135.2-openvino@sha256:4d76995904be2a332c7192c1d7af6408c5dc7e4e505c7c9e72c584058bf15326
     restart: always
     volumes:
       - /dev/bus/usb:/dev/bus/usb
@@ -43,7 +43,7 @@ services:
       - IMMICH_TELEMETRY_INCLUDE=all
     healthcheck:
       disable: false
-    image: ghcr.io/immich-app/immich-server:v1.135.0@sha256:b5fb7ce9b38e8986eb73d12865c542e552fa6a3b769a518e1f1da0ec4787621f
+    image: ghcr.io/immich-app/immich-server:v1.135.2@sha256:4579a3501be09afc2cfeb6ebb09994daaf60aabdbbf1aaf818569299348f1eb0
     ports:
       - 127.0.0.1:2283:2283
       - 127.0.0.1:8081:8081
