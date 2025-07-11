@@ -83,6 +83,7 @@ services:
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=60d
       - --web.enable-lifecycle
       - --web.enable-remote-write-receiver
     container_name: prometheus
