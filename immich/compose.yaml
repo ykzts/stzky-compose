@@ -8,7 +8,7 @@ services:
       POSTGRES_INITDB_ARGS: --data-checksums
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
-    image: ghcr.io/immich-app/postgres:16-vectorchord0.4.2@sha256:57b9036777a99ecb166ed5b074e6e08d43b56cb79410171d5ba7c211b15d48f4
+    image: ghcr.io/immich-app/postgres:16-vectorchord0.4.2@sha256:5a17852526ff79f0793319b5b3a035868ec601b7b2d5522d3f08123a2b37333c
     restart: always
     volumes:
       - ${DB_DATA_LOCATION}:/var/lib/postgresql/data
