@@ -6,7 +6,7 @@ services:
     environment:
       - PROMETHEUS_HASHED_PASSWORD=${PROMETHEUS_HASHED_PASSWORD}
       - PROMETHEUS_AUTH_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
-    image: caddy:2.10.2@sha256:7f2af82ffc1849dff5f4b9d9b0405eae77ed6cebe6740b181ae72a668e3ed525
+    image: caddy:2.10.2@sha256:4163a5c7b7631707956db4057720ec75de429992d5e3aa518d54872c01644dbe
     network_mode: host
     ports:
       - 443:443
