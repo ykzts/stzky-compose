@@ -1,15 +1,4 @@
 {
   $schema: 'https://docs.renovatebot.com/renovate-schema.json',
-  extends: [
-    'github>ykzts/ykzts//.github/renovate.json',
-    'customManagers:dockerfileVersions',
-  ],
-  packageRules: [
-    {
-      groupName: 'immich docker containers',
-      groupSlug: 'immich',
-      matchDatasources: ['docker'],
-      matchPackageNames: ['ghcr.io/immich-app/**'],
-    },
-  ],
+  extends: ['github>ykzts/ykzts//renovate-config/default.json5'],
 }
