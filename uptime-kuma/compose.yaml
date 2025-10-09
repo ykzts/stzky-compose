@@ -1,0 +1,32 @@
+name: uptime-kuma
+
+services:
+  database:
+    container_name: mariadb
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_RANDOM_ROOT_PASSWORD: 1
+      MYSQL_ROOT_HOST: localhost
+      MYSQL_USER: ${MYSQL_USER}
+    image: mariadb:12.0.2-noble@sha256:03a03a6817bb9eaa21e5aed1b734d432ec3f80021f5a2de1795475f158217545
+    restart: always
+    volumes:
+      - /opt/uptime-kuma/mariadb:/var/lib/mysql
+
+  uptime-kuma:
+    container_name: uptime-kuma
+    depends_on:
+      database:
+        condition: service_started
+    environment:
+      UPTIME_KUMA_DB_HOSTNAME: database
+      UPTIME_KUMA_DB_NAME: ${MYSQL_DATABASE}
+      UPTIME_KUMA_DB_PASSWORD: ${MYSQL_PASSWORD}
+      UPTIME_KUMA_DB_PORT: 3306
+      UPTIME_KUMA_DB_TYPE: mariadb
+      UPTIME_KUMA_DB_USERNAME: ${MYSQL_USER}
+    image: ghcr.io/louislam/uptime-kuma:2.0.0-beta.4@sha256:128685b2fb6e6caa4765220edb4458e107bb2b26af7ba43c320df8e3c3ea8e92
+    ports:
+      - 127.0.0.1:3001:3001
+    restart: always

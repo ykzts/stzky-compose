@@ -55,3 +55,10 @@ prometheus.stzky.com {
 	encode zstd gzip
 	reverse_proxy :9090
 }
+
+uptime.stzky.com, status.stzky.com, status.ykzts.com, status.ykzts.technology {
+	import secure-headers
+
+	encode zstd gzip
+	reverse_proxy :3001
+}
