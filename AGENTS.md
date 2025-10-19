@@ -50,3 +50,14 @@ go tool yamlfmt
 3. 新しいサービスに適切なヘルスチェックを追加してください
 4. 必要な環境変数を文書化してください
 5. プルリクエストを提出する前にサービスをローカルでテストしてください
+
+### コミットメッセージ
+
+コミットメッセージは[Conventional Commits](https://www.conventionalcommits.org/)に従ってください。サービス単位で分けられている各ディレクトリの名前（`caddy`、`grafana`、`immich`、`uptime-kuma`など）をスコープとして利用します。
+
+コミットメッセージの一行目はGitHubのUIに収まりやすいように、平易な英文で記述してください。
+
+例:
+- `feat(grafana): add prometheus configuration`
+- `fix(caddy): update reverse proxy settings`
+- `chore(immich): update docker image version`
