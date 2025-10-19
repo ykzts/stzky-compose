@@ -2,5 +2,5 @@
 .env
 .env.*
 
-# Compose override files (used for testing)
+# Compose override files (generated during local testing)
 compose.override.yaml
