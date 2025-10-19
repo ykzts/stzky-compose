@@ -100,13 +100,7 @@ docker compose down
 
 ## 開発
 
-### YAMLフォーマット
-
-このプロジェクトでは、YAMLファイルのフォーマットに`yamlfmt`を使用しています。このツールは`go.mod`で指定されています:
-
-```bash
-go tool yamlfmt
-```
+開発に関する情報は[CONTRIBUTING.md](CONTRIBUTING.md)を参照してください。
 
 ## ライセンス
 

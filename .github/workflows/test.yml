@@ -1,0 +1,173 @@
+name: Test Compose Services
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-compose:
+    name: Test ${{ matrix.service }}
+    runs-on: ubuntu-latest
+    strategy:
+      # Don't cancel all jobs if one fails - we want to test all services
+      fail-fast: false
+      matrix:
+        service:
+          - caddy
+          - grafana
+          - immich
+          - uptime-kuma
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Create .env file for ${{ matrix.service }}
+        working-directory: ${{ matrix.service }}
+        run: |
+          # Create a minimal .env file with dummy values for testing
+          case "${{ matrix.service }}" in
+            caddy)
+              cat > .env << EOF
+          PROMETHEUS_HASHED_PASSWORD=\$2a\$14\$test123456789012345678901234567890123456789012
+          ALLOY_PROMETHEUS_USERNAME=testuser
+          EOF
+              ;;
+            grafana)
+              # Create required directories for grafana
+              sudo mkdir -p /opt/grafana/{postgres,grafana,prometheus,redis}
+              sudo chmod 777 /opt/grafana/{postgres,grafana,prometheus,redis}
+              cat > .env << EOF
+          GF_DATABASE_HOST=database:5432
+          GF_DATABASE_NAME=grafana
+          GF_DATABASE_PASSWORD=testpassword
+          GF_DATABASE_TYPE=postgres
+          GF_DATABASE_USER=grafana
+          GF_REMOTE_CACHE_CONNSTR=addr=redis:6379,pool_size=100,db=0
+          GF_SMTP_FROM_ADDRESS=noreply@example.com
+          GF_SMTP_FROM_NAME=Grafana
+          GF_SMTP_HOST=smtp.example.com:587
+          GF_SMTP_PASSWORD=testpassword
+          ALLOY_PROMETHEUS_PASSWORD=testpassword
+          ALLOY_PROMETHEUS_USERNAME=testuser
+          EOF
+              ;;
+            immich)
+              cat > .env << EOF
+          DB_DATABASE_NAME=immich
+          DB_PASSWORD=testpassword
+          DB_USERNAME=immich
+          DB_DATA_LOCATION=/tmp/immich-db
+          UPLOAD_LOCATION=/tmp/immich-upload
+          EOF
+              mkdir -p /tmp/immich-db /tmp/immich-upload
+              ;;
+            uptime-kuma)
+              # Create required directory for uptime-kuma
+              sudo mkdir -p /opt/uptime-kuma/mariadb
+              sudo chmod 777 /opt/uptime-kuma/mariadb
+              cat > .env << EOF
+          MYSQL_DATABASE=uptime_kuma
+          MYSQL_PASSWORD=testpassword
+          MYSQL_USER=uptime_kuma
+          EOF
+              ;;
+          esac
+
+      - name: Setup compose files
+        working-directory: ${{ matrix.service }}
+        run: |
+          # Use compose.test.yaml if it exists
+          if [ -f compose.test.yaml ]; then
+            echo "COMPOSE_FILE=compose.yaml:compose.test.yaml" >> $GITHUB_ENV
+          fi
+
+      - name: Start Docker Compose
+        working-directory: ${{ matrix.service }}
+        run: |
+          docker compose up -d
+
+      - name: Wait for services to be healthy
+        working-directory: ${{ matrix.service }}
+        timeout-minutes: 5
+        run: |
+          # Get list of all services
+          services=$(docker compose ps --services)
+
+          echo "Waiting for services to be ready..."
+
+          # Maximum wait time in seconds
+          max_wait=300
+          elapsed=0
+          interval=5
+
+          while [ $elapsed -lt $max_wait ]; do
+            all_healthy=true
+
+            for service in $services; do
+              # Get container name
+              container=$(docker compose ps -q $service)
+
+              if [ -z "$container" ]; then
+                echo "❌ Service $service: container not found"
+                all_healthy=false
+                continue
+              fi
+
+              # Check container status
+              status=$(docker inspect --format='{{.State.Status}}' $container 2>/dev/null || echo "not found")
+              health=$(docker inspect --format='{{if .State.Health}}{{.State.Health.Status}}{{else}}none{{end}}' $container 2>/dev/null || echo "none")
+
+              if [ "$status" != "running" ]; then
+                echo "❌ Service $service: status=$status (expected: running)"
+                all_healthy=false
+              elif [ "$health" = "none" ]; then
+                echo "✅ Service $service: running (no healthcheck)"
+              elif [ "$health" = "healthy" ]; then
+                echo "✅ Service $service: $health"
+              elif [ "$health" = "unhealthy" ]; then
+                echo "❌ Service $service: $health"
+                all_healthy=false
+              else
+                echo "⏳ Service $service: $health"
+                all_healthy=false
+              fi
+            done
+
+            if [ "$all_healthy" = true ]; then
+              echo ""
+              echo "🎉 All services are ready!"
+              exit 0
+            fi
+
+            sleep $interval
+            elapsed=$((elapsed + interval))
+            echo ""
+          done
+
+          echo "❌ Timeout: Services did not become healthy within ${max_wait}s"
+          echo ""
+          echo "Final status:"
+          docker compose ps
+          echo ""
+          echo "Logs:"
+          docker compose logs --tail=50
+          exit 1
+
+      - name: Show service status
+        if: always()
+        working-directory: ${{ matrix.service }}
+        run: |
+          echo "Service status:"
+          docker compose ps
+          echo ""
+          echo "Service logs (last 100 lines):"
+          docker compose logs --tail=100
+
+      - name: Cleanup
+        if: always()
+        working-directory: ${{ matrix.service }}
+        run: |-
+          docker compose down -v
