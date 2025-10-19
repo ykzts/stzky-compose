@@ -1,52 +1,52 @@
 # Agents
 
-This document provides information about agents and automation used in this repository.
+このドキュメントでは、このリポジトリで使用されているエージェントと自動化について説明します。
 
 ## GitHub Actions
 
-This repository may use GitHub Actions for continuous integration and automation tasks.
+このリポジトリは、継続的インテグレーションと自動化タスクにGitHub Actionsを使用する場合があります。
 
 ## Renovate
 
-This repository uses Renovate for automated dependency updates. The configuration can be found in `.github/renovate.json5`.
+このリポジトリは、依存関係の自動更新にRenovateを使用しています。設定は`.github/renovate.json5`にあります。
 
-Renovate automatically:
-- Updates Docker image versions in `compose.yaml` files
-- Updates Go dependencies in `go.mod`
-- Creates pull requests for dependency updates
-- Keeps dependencies secure and up-to-date
+Renovateは自動的に以下を実行します:
+- `compose.yaml`ファイル内のDockerイメージバージョンの更新
+- `go.mod`内のGo依存関係の更新
+- 依存関係更新のためのプルリクエストの作成
+- 依存関係を安全かつ最新の状態に保つ
 
-## Development Tools
+## 開発ツール
 
 ### yamlfmt
 
-The repository uses `yamlfmt` as a Go tool (defined in `go.mod`) to ensure consistent YAML formatting across all compose files.
+このリポジトリは、すべてのcomposeファイル間で一貫したYAMLフォーマットを確保するため、Goツール(`go.mod`で定義)として`yamlfmt`を使用しています。
 
-To run the formatter:
+フォーマッターを実行するには:
 
 ```bash
-go run github.com/google/yamlfmt/cmd/yamlfmt .
+go tool yamlfmt
 ```
 
-## Service Management
+## サービス管理
 
-Each service in this repository is designed to be:
-- **Self-contained**: Each service directory contains its own `compose.yaml` and configuration
-- **Independent**: Services can be deployed and managed independently
-- **Automated**: Using container orchestration for automatic restarts and health checks
+このリポジトリの各サービスは以下のように設計されています:
+- **自己完結型**: 各サービスディレクトリには独自の`compose.yaml`と設定が含まれています
+- **独立性**: サービスは個別にデプロイおよび管理できます
+- **自動化**: コンテナオーケストレーションを使用した自動再起動とヘルスチェック
 
-## Security
+## セキュリティ
 
-- All services use specific image versions with SHA256 digests for reproducibility
-- Renovate keeps images updated with security patches
-- Environment variables are used for sensitive configuration
-- Health checks are configured where applicable
+- すべてのサービスは、再現性のためにSHA256ダイジェスト付きの特定のイメージバージョンを使用しています
+- Renovateはセキュリティパッチでイメージを最新の状態に保ちます
+- 機密性の高い設定には環境変数を使用します
+- 該当する場合はヘルスチェックが設定されています
 
-## Contributing
+## コントリビューション
 
-When contributing to this repository:
-1. Ensure YAML files are formatted with `yamlfmt`
-2. Use specific image versions with SHA256 digests
-3. Add appropriate health checks for new services
-4. Document required environment variables
-5. Test services locally before submitting pull requests
+このリポジトリにコントリビュートする際は:
+1. YAMLファイルが`yamlfmt`でフォーマットされていることを確認してください
+2. SHA256ダイジェスト付きの特定のイメージバージョンを使用してください
+3. 新しいサービスに適切なヘルスチェックを追加してください
+4. 必要な環境変数を文書化してください
+5. プルリクエストを提出する前にサービスをローカルでテストしてください

@@ -1,115 +1,115 @@
 # stzky-compose
 
-A collection of Docker Compose configurations for self-hosted services.
+セルフホストサービス向けのDocker Compose設定ファイル集です。
 
-## Overview
+## 概要
 
-This repository contains Docker Compose configurations for various self-hosted services, designed to be easily deployable and maintainable.
+このリポジトリには、簡単にデプロイ・メンテナンスできるように設計された、様々なセルフホストサービス向けのDocker Compose設定ファイルが含まれています。
 
-## Services
+## サービス
 
 ### Caddy
 
-Web server with automatic HTTPS powered by Caddy.
+Caddyを使用した自動HTTPS対応のWebサーバー。
 
-- **Location**: `caddy/`
-- **Image**: caddy:2.10.2
-- **Ports**: 80, 443, 2019 (admin)
-- **Features**: 
-  - Automatic HTTPS with Let's Encrypt
-  - Reverse proxy capabilities
-  - Prometheus authentication
+- **場所**: `caddy/`
+- **イメージ**: caddy:2.10.2
+- **ポート**: 80, 443, 2019 (管理用)
+- **機能**: 
+  - Let's Encryptによる自動HTTPS
+  - リバースプロキシ機能
+  - Prometheus認証
 
 ### Grafana
 
-Complete monitoring stack including Grafana, Prometheus, Alloy, and exporters.
+Grafana、Prometheus、Alloy、各種エクスポーターを含む完全な監視スタック。
 
-- **Location**: `grafana/`
-- **Services**:
-  - Grafana (visualization)
-  - Prometheus (metrics storage)
-  - Alloy (telemetry collector)
-  - Node Exporter (system metrics)
-  - SNMP Exporter (SNMP device metrics)
-  - PostgreSQL (database)
-  - Valkey/Redis (cache)
-- **Ports**:
+- **場所**: `grafana/`
+- **サービス**:
+  - Grafana (可視化)
+  - Prometheus (メトリクスストレージ)
+  - Alloy (テレメトリコレクター)
+  - Node Exporter (システムメトリクス)
+  - SNMP Exporter (SNMPデバイスメトリクス)
+  - PostgreSQL (データベース)
+  - Valkey/Redis (キャッシュ)
+- **ポート**:
   - 3000 (Grafana)
   - 9090 (Prometheus)
 
 ### Immich
 
-Self-hosted photo and video management solution.
+セルフホスト型の写真・動画管理ソリューション。
 
-- **Location**: `immich/`
-- **Services**:
+- **場所**: `immich/`
+- **サービス**:
   - Immich Server
   - Immich Machine Learning
-  - PostgreSQL with vector support
+  - PostgreSQL (ベクトルサポート付き)
   - Valkey/Redis
-- **Ports**:
-  - 2283 (main server)
-  - 8081, 8082 (additional services)
+- **ポート**:
+  - 2283 (メインサーバー)
+  - 8081, 8082 (追加サービス)
 
 ### Uptime Kuma
 
-Self-hosted monitoring tool for uptime tracking.
+稼働時間監視のためのセルフホスト型監視ツール。
 
-- **Location**: `uptime-kuma/`
-- **Services**:
+- **場所**: `uptime-kuma/`
+- **サービス**:
   - Uptime Kuma
   - MariaDB
-- **Ports**: 3001
+- **ポート**: 3001
 
-## Usage
+## 使い方
 
-### Prerequisites
+### 前提条件
 
 - Docker
 - Docker Compose
-- Go 1.24.3 (for yamlfmt tool)
+- Go 1.24.3 (yamlfmtツール用)
 
-### Deployment
+### デプロイ
 
-Each service can be deployed independently:
+各サービスは個別にデプロイできます:
 
 ```bash
-cd <service-directory>
+cd <サービスディレクトリ>
 docker compose up -d
 ```
 
-For example, to deploy Grafana:
+例えば、Grafanaをデプロイする場合:
 
 ```bash
 cd grafana
 docker compose up -d
 ```
 
-### Configuration
+### 設定
 
-Each service requires environment variables. Create a `.env` file in the respective service directory with the necessary variables. Refer to each service's `compose.yaml` file for required environment variables.
+各サービスには環境変数が必要です。各サービスディレクトリに`.env`ファイルを作成し、必要な変数を設定してください。必要な環境変数については、各サービスの`compose.yaml`ファイルを参照してください。
 
-### Stopping Services
+### サービスの停止
 
 ```bash
-cd <service-directory>
+cd <サービスディレクトリ>
 docker compose down
 ```
 
-## Development
+## 開発
 
-### YAML Formatting
+### YAMLフォーマット
 
-This project uses `yamlfmt` for YAML file formatting. The tool is specified in `go.mod`:
+このプロジェクトでは、YAMLファイルのフォーマットに`yamlfmt`を使用しています。このツールは`go.mod`で指定されています:
 
 ```bash
-go run github.com/google/yamlfmt/cmd/yamlfmt .
+go tool yamlfmt
 ```
 
-## License
+## ライセンス
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+このプロジェクトはMITライセンスの下でライセンスされています。詳細は[LICENSE](LICENSE)ファイルを参照してください。
 
-## Author
+## 著者
 
 Yamagishi Kazutoshi
