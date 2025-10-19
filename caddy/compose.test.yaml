@@ -1,7 +1,7 @@
 services:
   caddy:
     healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:2019/config/"]
+      test: ["CMD", "caddy", "version"]
       interval: 10s
       timeout: 5s
       retries: 5
