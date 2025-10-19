@@ -1,0 +1,6 @@
+# Environment files
+.env
+.env.*
+
+# Compose override files (used for testing)
+compose.override.yaml
