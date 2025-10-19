@@ -11,6 +11,7 @@ jobs:
     name: Test ${{ matrix.service }}
     runs-on: ubuntu-latest
     strategy:
+      # Don't cancel all jobs if one fails - we want to test all services
       fail-fast: false
       matrix:
         service:
