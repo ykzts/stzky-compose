@@ -6,7 +6,7 @@
 
 ### YAMLフォーマット
 
-このプロジェクトでは、YAMLファイルのフォーマットに`yamlfmt`を使用しています。このツールは`go.mod`で指定されています:
+このプロジェクトでは、YAMLファイルのフォーマットに`yamlfmt`を使用しています。このツールは`go.mod`で指定されています。
 
 ```bash
 go tool yamlfmt
@@ -28,6 +28,18 @@ docker compose up -d
 ```bash
 docker compose -f compose.yaml -f compose.test.yaml up -d
 ```
+
+### 継続的インテグレーション
+
+このリポジトリは、GitHub Actionsを使用してComposeサービスの自動ヘルスチェックを実施しています。
+
+プルリクエストまたはmainブランチへのプッシュ時に、以下のテストが実行されます:
+
+1. 各サービスディレクトリのDocker Compose設定を使用してサービスを起動
+2. ヘルスチェックが定義されているサービスは`healthy`状態になるまで待機
+3. ヘルスチェックが定義されていないサービスは、コンテナが`running`状態になることを確認
+
+テストワークフローは`.github/workflows/test.yml`で定義されています。
 
 ### コミットメッセージ
 

@@ -76,24 +76,23 @@ jobs:
               ;;
           esac
 
-      - name: Start Docker Compose
+      - name: Setup compose files
         working-directory: ${{ matrix.service }}
         run: |
           # Use compose.test.yaml if it exists
           if [ -f compose.test.yaml ]; then
-            export COMPOSE_FILE=compose.yaml:compose.test.yaml
+            echo "COMPOSE_FILE=compose.yaml:compose.test.yaml" >> $GITHUB_ENV
           fi
+
+      - name: Start Docker Compose
+        working-directory: ${{ matrix.service }}
+        run: |
           docker compose up -d
 
       - name: Wait for services to be healthy
         working-directory: ${{ matrix.service }}
         timeout-minutes: 5
         run: |
-          # Use compose.test.yaml if it exists
-          if [ -f compose.test.yaml ]; then
-            export COMPOSE_FILE=compose.yaml:compose.test.yaml
-          fi
-
           # Get list of all services
           services=$(docker compose ps --services)
 
@@ -161,11 +160,6 @@ jobs:
         if: always()
         working-directory: ${{ matrix.service }}
         run: |
-          # Use compose.test.yaml if it exists
-          if [ -f compose.test.yaml ]; then
-            export COMPOSE_FILE=compose.yaml:compose.test.yaml
-          fi
-
           echo "Service status:"
           docker compose ps
           echo ""
@@ -176,8 +170,4 @@ jobs:
         if: always()
         working-directory: ${{ matrix.service }}
         run: |-
-          # Use compose.test.yaml if it exists
-          if [ -f compose.test.yaml ]; then
-            export COMPOSE_FILE=compose.yaml:compose.test.yaml
-          fi
           docker compose down -v
