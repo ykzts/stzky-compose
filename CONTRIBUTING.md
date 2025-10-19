@@ -16,14 +16,14 @@ go tool yamlfmt
 
 ### テスト
 
-各サービスのComposeファイルは、GitHub Actionsで自動的にテストされます。ローカルでテストする場合は:
+各サービスのComposeファイルは、GitHub Actionsで自動的にテストされます。ローカルでテストする場合は以下のコマンドを実行してください。
 
 ```bash
 cd <サービスディレクトリ>
 docker compose up -d
 ```
 
-テスト用の設定がある場合:
+テスト用の設定がある場合は、次のように指定します。
 
 ```bash
 docker compose -f compose.yaml -f compose.test.yaml up -d
@@ -33,7 +33,7 @@ docker compose -f compose.yaml -f compose.test.yaml up -d
 
 このリポジトリは、GitHub Actionsを使用してComposeサービスの自動ヘルスチェックを実施しています。
 
-プルリクエストまたはmainブランチへのプッシュ時に、以下のテストが実行されます:
+プルリクエストまたはmainブランチへのプッシュ時に、以下のテストが実行されます。
 
 1. 各サービスディレクトリのDocker Compose設定を使用してサービスを起動
 2. ヘルスチェックが定義されているサービスは`healthy`状態になるまで待機
