@@ -57,7 +57,10 @@ go tool yamlfmt
 
 コミットメッセージの一行目はGitHubのUIに収まりやすいように、平易な英文で記述してください。
 
+**注意**: Pull Requestのタイトルと本文は、マージ時にコミットメッセージとして使用されます。そのため、PRのタイトルもConventional Commitsの形式に従って記述してください。
+
 例:
 - `feat(grafana): add prometheus configuration`
 - `fix(caddy): update reverse proxy settings`
 - `chore(immich): update docker image version`
+- `docs: add comprehensive Japanese documentation`
