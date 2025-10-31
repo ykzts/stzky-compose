@@ -39,7 +39,7 @@ photos.stzky.com {
 
 	encode zstd gzip
 	header {
-		Content-Security-Policy "base-uri 'self'; connect-src 'self' https://pay.futo.org https://static.immich.cloud https://tiles.immich.cloud; default-src 'none'; font-src 'self'; frame-ancestors 'none'; img-src 'self' data: blob:; manifest-src 'self'; media-src 'self'; sandbox allow-downloads allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts; script-src 'self' 'unsafe-inline' https://www.gstatic.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; worker-src 'self' blob:"
+		Content-Security-Policy "base-uri 'self'; connect-src 'self' https://pay.futo.org https://static.immich.cloud https://tiles.immich.cloud; default-src 'none'; font-src 'self'; frame-ancestors 'none'; img-src 'self' data: blob:; manifest-src 'self'; media-src 'self'; sandbox allow-downloads allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://www.gstatic.com; script-src-attr 'none'; style-src 'self' 'unsafe-inline'; worker-src 'self' blob:"
 		Permissions-Policy "camera=(), display-capture=(), geolocation=(self), microphone=()"
 		-X-Powered-By
 	}
