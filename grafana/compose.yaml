@@ -8,7 +8,7 @@ services:
     environment:
       - ALLOY_PROMETHEUS_PASSWORD=${ALLOY_PROMETHEUS_PASSWORD}
       - ALLOY_PROMETHEUS_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
-    image: grafana/alloy:v1.13.0@sha256:6616111d70b3c75d5aa177e0584a523403eaba0eb3b177cb387302c2206d5221
+    image: grafana/alloy:v1.13.2@sha256:8abcd0d97a97099cabb34be8dcfc448fca6c35931ae9291aaf74056105dedcca
     network_mode: host
     restart: always
     volumes:
