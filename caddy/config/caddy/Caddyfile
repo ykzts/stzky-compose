@@ -65,5 +65,10 @@ uptime.stzky.com, status.stzky.com, status.ykzts.com, status.ykzts.technology {
 
 epub.ykzts.com {
 	encode zstd gzip
-	reverse_proxy :8085
+
+	reverse_proxy :8085 {
+		transport http {
+			versions h2c 2
+		}
+	}
 }
