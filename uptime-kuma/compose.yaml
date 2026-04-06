@@ -26,7 +26,7 @@ services:
       UPTIME_KUMA_DB_PORT: 3306
       UPTIME_KUMA_DB_TYPE: mariadb
       UPTIME_KUMA_DB_USERNAME: ${MYSQL_USER}
-    image: ghcr.io/louislam/uptime-kuma:2.1.0@sha256:da418b1f5655c12d2d62aa3d189117bfad5d83c2ab99bb3e82b2eaaf5246bbc1
+    image: ghcr.io/louislam/uptime-kuma:2.2.1@sha256:7337368a77873f159435de9ef09567f68c31285ed5f951dec36256c4b267ee44
     ports:
       - 127.0.0.1:3001:3001
     restart: always
