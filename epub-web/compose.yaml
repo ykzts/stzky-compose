@@ -1,0 +1,19 @@
+name: epub-web
+
+services:
+  epub-web:
+    container_name: epub-web
+    platform: linux/amd64
+    environment:
+      EPUB_WEB_MAX_UPLOAD_SIZE: 256
+      EPUB_WEB_MAX_PAGES: 500
+      EPUB_WEB_MAX_ASSET_BYTES: 67108864
+      EPUB_WEB_MAX_IMAGE_LONG_EDGE: 2048
+      EPUB_WEB_MAX_IMAGE_PIXELS: 100000000
+      EPUB_WEB_WORKERS: 8
+      EPUB_WEB_REQUEST_TIMEOUT: 90s
+      EPUB_WEB_SHUTDOWN_TIMEOUT: 15s
+    image: ghcr.io/publira/epub-web:1.0.4@sha256:d757a7867517251f58dc6a37c6217a622e4042d16dc3b73406e6003477fd11d5
+    ports:
+      - 127.0.0.1:8085:8080
+    restart: always
