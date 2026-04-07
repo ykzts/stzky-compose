@@ -10,7 +10,7 @@ services:
       EPUB_WEB_WORKERS: 8
       EPUB_WEB_REQUEST_TIMEOUT: 90s
       EPUB_WEB_SHUTDOWN_TIMEOUT: 15s
-    image: ghcr.io/publira/epub-web:1.0.4@sha256:d757a7867517251f58dc6a37c6217a622e4042d16dc3b73406e6003477fd11d5
+    image: ghcr.io/publira/epub-web:1.1.0@sha256:150c4ddd08f018d9fcb9c903d2e7b05ad1d88d7ed06f1677fbce8360cf57632f
     ports:
       - 127.0.0.1:8085:8080
     restart: always
