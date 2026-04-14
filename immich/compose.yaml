@@ -23,7 +23,7 @@ services:
       - IMMICH_TELEMETRY_INCLUDE=all
     healthcheck:
       disable: false
-    image: ghcr.io/immich-app/immich-machine-learning:v2.7.2-openvino@sha256:bdb10023d63ae7bdf41de9d9626f6e930574b393f07483743a0e042d71112cc5
+    image: ghcr.io/immich-app/immich-machine-learning:v2.7.5-openvino@sha256:71cd5a681823c4b818f4b24b3f05816eccc3d085559e7615f695bde77e64f1f2
     restart: always
     volumes:
       - /dev/bus/usb:/dev/bus/usb
@@ -43,7 +43,7 @@ services:
       - IMMICH_TELEMETRY_INCLUDE=all
     healthcheck:
       disable: false
-    image: ghcr.io/immich-app/immich-server:v2.7.2@sha256:6a2952539e2a9c8adcf6fb74850bb1ba7e1db2804050acea21baafdc9154c430
+    image: ghcr.io/immich-app/immich-server:v2.7.5@sha256:c15bff75068effb03f4355997d03dc7e0fc58720c2b54ad6f7f10d1bc57efaa5
     ports:
       - 127.0.0.1:2283:2283
       - 127.0.0.1:8081:8081
