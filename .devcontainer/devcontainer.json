@@ -1,0 +1,20 @@
+{
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "EditorConfig.EditorConfig"
+      ]
+    }
+  },
+  "dockerComposeFile": "compose.yaml",
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2.16.1": {
+      "moby": false,
+      "version": "latest"
+    }
+  },
+  "name": "stzky infra",
+  "postCreateCommand": "bash .devcontainer/setup-k8s.sh",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename:-stzky-compose}"
+}

@@ -1,0 +1,16 @@
+apiVersion: v2
+name: stzky-grafana
+description: Grafana monitoring stack umbrella chart
+type: application
+version: 0.1.0
+
+dependencies:
+  - name: grafana
+    version: 8.3.1
+    repository: https://grafana.github.io/helm-charts
+  - name: postgresql
+    version: 16.7.27
+    repository: https://charts.bitnami.com/bitnami
+  - name: valkey
+    version: 5.5.1
+    repository: https://charts.bitnami.com/bitnami

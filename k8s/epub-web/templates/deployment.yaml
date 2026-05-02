@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: epub-web
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: epub-web
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: epub-web
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: epub-web
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      containers:
+        - name: epub-web
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          env:
+            - name: EPUB_WEB_MAX_UPLOAD_SIZE
+              value: {{ .Values.env.maxUploadSize | quote }}
+            - name: EPUB_WEB_MAX_PAGES
+              value: {{ .Values.env.maxPages | quote }}
+            - name: EPUB_WEB_WORKERS
+              value: {{ .Values.env.workers | quote }}
+            - name: EPUB_WEB_REQUEST_TIMEOUT
+              value: {{ .Values.env.requestTimeout | quote }}
+            - name: EPUB_WEB_SHUTDOWN_TIMEOUT
+              value: {{ .Values.env.shutdownTimeout | quote }}
+          ports:
+            - containerPort: 8080

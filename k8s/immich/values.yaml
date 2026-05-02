@@ -1,0 +1,42 @@
+libraryStorage: 100Gi
+
+immich:
+  immich:
+    metrics:
+      enabled: false
+    persistence:
+      library:
+        existingClaim: immich-library
+  controllers:
+    main:
+      containers:
+        main:
+          env:
+            DB_HOSTNAME: "immich-postgresql"
+            DB_PORT: "5432"
+            DB_DATABASE_NAME: immich
+            DB_USERNAME: immich
+            DB_PASSWORD:
+              valueFrom:
+                secretKeyRef:
+                  name: immich-postgresql
+                  key: password
+            REDIS_HOSTNAME: "immich-valkey-primary"
+
+global:
+  security:
+    allowInsecureImages: true
+
+postgresql:
+  password: changeme
+
+valkey:
+  auth:
+    enabled: false
+
+ingress:
+  enabled: true
+  hostname: photos.stzky.com
+  gateway:
+    name: gateway
+    namespace: grafana

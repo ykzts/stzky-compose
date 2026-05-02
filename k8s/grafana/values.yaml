@@ -1,0 +1,125 @@
+
+grafana:
+  envFromSecret: grafana-env
+  grafana.ini:
+    auth:
+      disable_login_form: true
+    database:
+      host: $__env{GF_DATABASE_HOST}
+      name: $__env{GF_DATABASE_NAME}
+      password: $__env{GF_DATABASE_PASSWORD}
+      type: postgres
+      user: $__env{GF_DATABASE_USER}
+    remote_cache:
+      connstr: $__env{GF_REMOTE_CACHE_CONNSTR}
+      type: redis
+    security:
+      content_security_policy: true
+      cookie_samesite: Strict
+      cookie_secure: true
+    server:
+      domain: graph.stzky.com
+      root_url: https://graph.stzky.com
+    smtp:
+      enabled: true
+      from_address: $__env{GF_SMTP_FROM_ADDRESS}
+      from_name: $__env{GF_SMTP_FROM_NAME}
+      host: $__env{GF_SMTP_HOST}
+      password: $__env{GF_SMTP_PASSWORD}
+      user: $__env{GF_SMTP_USER}
+    snapshots:
+      external_enabled: false
+    users:
+      default_theme: system
+
+postgresql:
+  auth:
+    database: grafana
+    existingSecret: grafana-env
+    secretKeys:
+      adminPasswordKey: GF_DATABASE_PASSWORD
+      userPasswordKey: GF_DATABASE_PASSWORD
+    username: grafana
+  image:
+    tag: latest
+
+valkey:
+  auth:
+    enabled: false
+  replica:
+    replicaCount: 0
+
+ingress:
+  enabled: true
+  hostname: graph.stzky.com
+  gateway:
+    name: gateway
+    namespace: grafana
+
+gateway:
+  certManager:
+    clusterIssuer: letsencrypt-prod
+    certificates:
+      - secretName: stzky-com-tls
+        dnsNames:
+          - graph.stzky.com
+          - photos.stzky.com
+          - uptime.stzky.com
+          - status.stzky.com
+      - secretName: ykzts-tls
+        dnsNames:
+          - epub.ykzts.com
+          - status.ykzts.com
+          - status.ykzts.technology
+  tls:
+    secrets:
+      - stzky-com-tls
+      - ykzts-tls
+  hostnames:
+    - "*.stzky.com"
+    - "*.ykzts.com"
+    - "*.ykzts.technology"
+
+prometheus:
+  image:
+    repository: prom/prometheus
+    tag: v3.11.3
+  retention: 60d
+  storage: 50Gi
+  # Pre-create a Secret named `prometheus-web-config` containing `web-config.yml`:
+  #   basic_auth_users:
+  #     <username>: <bcrypt_hash>
+  # The bcrypt hash can be generated with: htpasswd -nB <username>
+  auth:
+    webConfigSecret: prometheus-web-config
+  snmp:
+    targets:
+      - address: 192.168.100.1
+        module: yamaha_rt
+        auth: public_v2
+  ingress:
+    enabled: true
+    hostname: prometheus.stzky.com
+    gateway:
+      name: gateway
+      namespace: grafana
+
+alloy:
+  image:
+    repository: grafana/alloy
+    tag: v1.16.0
+  # Secret must contain ALLOY_PROMETHEUS_USERNAME and ALLOY_PROMETHEUS_PASSWORD
+  auth:
+    existingSecret: grafana-env
+    usernameKey: ALLOY_PROMETHEUS_USERNAME
+    passwordKey: ALLOY_PROMETHEUS_PASSWORD
+
+nodeExporter:
+  image:
+    repository: prom/node-exporter
+    tag: v1.11.1
+
+snmpExporter:
+  image:
+    repository: prom/snmp-exporter
+    tag: v0.30.1
