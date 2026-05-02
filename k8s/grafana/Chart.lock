@@ -1,12 +1,12 @@
 dependencies:
 - name: grafana
   repository: https://grafana.github.io/helm-charts
-  version: 8.3.1
+  version: 8.15.0
 - name: postgresql
   repository: https://charts.bitnami.com/bitnami
   version: 16.7.27
 - name: valkey
   repository: https://charts.bitnami.com/bitnami
   version: 5.5.1
-digest: sha256:c2fef096d6ecb56ee3a994dd21f58f8641e415612b467da043276275a1e9b8f0
-generated: "2026-05-02T13:58:36.140291443Z"
+digest: sha256:603bd1055e01575dde1ff452d6e7aaab2b3c0800072a55bfdfed7f88198e2288
+generated: "2026-05-02T14:35:07.144168278Z"
