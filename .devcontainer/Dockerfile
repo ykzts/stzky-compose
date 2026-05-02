@@ -54,10 +54,10 @@ RUN \
 ARG GATEWAY_API_VERSION=1.2.1
 ENV GATEWAY_API_VERSION=${GATEWAY_API_VERSION}
 
-# renovate: datasource=helm depName=cilium packageName=cilium/cilium
+# renovate: datasource=helm depName=cilium registryUrl=https://helm.cilium.io/
 ARG CILIUM_VERSION=1.17.3
 ENV CILIUM_VERSION=${CILIUM_VERSION}
 
-# renovate: datasource=helm depName=cert-manager packageName=jetstack/cert-manager
+# renovate: datasource=helm depName=cert-manager registryUrl=https://charts.jetstack.io
 ARG CERT_MANAGER_VERSION=1.14.4
 ENV CERT_MANAGER_VERSION=${CERT_MANAGER_VERSION}

@@ -45,3 +45,19 @@ spec:
                   key: MYSQL_USER
           ports:
             - containerPort: 3001
+          livenessProbe:
+            exec:
+              command:
+                - /app/extra/healthcheck
+            initialDelaySeconds: 30
+            periodSeconds: 10
+            timeoutSeconds: 30
+            failureThreshold: 3
+          readinessProbe:
+            exec:
+              command:
+                - /app/extra/healthcheck
+            initialDelaySeconds: 15
+            periodSeconds: 5
+            timeoutSeconds: 28
+            failureThreshold: 3

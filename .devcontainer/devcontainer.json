@@ -14,7 +14,7 @@
     }
   },
   "name": "stzky infra",
-  "postCreateCommand": "bash .devcontainer/setup-k8s.sh",
+  "postCreateCommand": "bash scripts/setup-k8s.sh",
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename:-stzky-compose}"
 }
