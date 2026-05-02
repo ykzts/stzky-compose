@@ -51,7 +51,7 @@ RUN \
   fi
 
 # renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
-ARG GATEWAY_API_VERSION=1.2.1
+ARG GATEWAY_API_VERSION=1.5.1
 ENV GATEWAY_API_VERSION=${GATEWAY_API_VERSION}
 
 # renovate: datasource=helm depName=cilium registryUrl=https://helm.cilium.io/
