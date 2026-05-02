@@ -1,11 +1,11 @@
 image:
   repository: ghcr.io/louislam/uptime-kuma
-  tag: "2.2.1"
+  tag: "2.2.1@sha256:7337368a77873f159435de9ef09567f68c31285ed5f951dec36256c4b267ee44"
 
 database:
   image:
     repository: mariadb
-    tag: "12.2.2-noble"
+    tag: "12.2.2-noble@sha256:e0236fc6386e7eacd9359e59d0a078bd7aa0d18280d36d13061121bedeaee903"
   name: uptime_kuma
   user: uptime_kuma
   password: changeme
