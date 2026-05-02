@@ -58,6 +58,6 @@ ENV GATEWAY_API_VERSION=${GATEWAY_API_VERSION}
 ARG CILIUM_VERSION=1.17.3
 ENV CILIUM_VERSION=${CILIUM_VERSION}
 
-# renovate: datasource=helm depName=cert-manager packageName=jetstack/cert-manager
+# renovate: datasource=github-releases depName=cert-manager packageName=cert-manager/cert-manager
 ARG CERT_MANAGER_VERSION=1.14.4
 ENV CERT_MANAGER_VERSION=${CERT_MANAGER_VERSION}

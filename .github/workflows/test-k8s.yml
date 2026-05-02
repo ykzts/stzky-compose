@@ -9,7 +9,7 @@ on:
 env:
   # renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
   GATEWAY_API_VERSION: 1.2.1
-  # renovate: datasource=helm depName=cert-manager packageName=jetstack/cert-manager
+  # renovate: datasource=github-releases depName=cert-manager packageName=cert-manager/cert-manager
   CERT_MANAGER_VERSION: 1.14.4
 
 jobs:
