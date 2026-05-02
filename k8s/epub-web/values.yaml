@@ -1,6 +1,6 @@
 image:
   repository: ghcr.io/publira/epub-web
-  tag: "1.1.4"
+  tag: "1.1.4@sha256:617baa62bdb9b5d66ea45da2a8ec9ea51f363d464c4692803aa598728a18eaec"
 
 env:
   maxUploadSize: "256"

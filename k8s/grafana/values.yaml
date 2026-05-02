@@ -83,7 +83,7 @@ gateway:
 prometheus:
   image:
     repository: prom/prometheus
-    tag: v3.11.3
+    tag: v3.11.3@sha256:e4254400b85610324913f0dc4acf92603d9984e7519414c5a12811aa6146acc3
   retention: 60d
   storage: 50Gi
   # Pre-create a Secret named `prometheus-web-config` containing `web-config.yml`:
@@ -107,7 +107,7 @@ prometheus:
 alloy:
   image:
     repository: grafana/alloy
-    tag: v1.16.0
+    tag: v1.16.0@sha256:6e00cf7c5a692ff5f24844529416ed017d76fce922f8199004e73d5eca46b6b8
   # Secret must contain ALLOY_PROMETHEUS_USERNAME and ALLOY_PROMETHEUS_PASSWORD
   auth:
     existingSecret: grafana-env
@@ -117,9 +117,9 @@ alloy:
 nodeExporter:
   image:
     repository: prom/node-exporter
-    tag: v1.11.1
+    tag: v1.11.1@sha256:e9cff4fc67b1818f8c97adb115b9f12c9a54b533de86765d4a0effc01b357205
 
 snmpExporter:
   image:
     repository: prom/snmp-exporter
-    tag: v0.30.1
+    tag: v0.30.1@sha256:e5fd5e8b43ace6c088fe9bf0b37b7fff0e04380bee352be7ec41b853a4dd5859
