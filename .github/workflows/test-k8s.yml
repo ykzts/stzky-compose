@@ -1,0 +1,82 @@
+name: Test Kubernetes Manifests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+env:
+  # renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
+  GATEWAY_API_VERSION: 1.2.1
+  # renovate: datasource=helm depName=cert-manager packageName=jetstack/cert-manager
+  CERT_MANAGER_VERSION: 1.14.4
+
+jobs:
+  test-k8s:
+    name: Test ${{ matrix.app }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        app:
+          - epub-web
+          - grafana
+          - immich
+          - uptime-kuma
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Create kind cluster
+        uses: helm/kind-action@ef37e7f390d99f746eb8b610417061a60e82a6cc # v1.14.0
+
+      - name: Setup Kubernetes dependencies
+        env:
+          GATEWAY_API_VERSION: ${{ env.GATEWAY_API_VERSION }}
+          CERT_MANAGER_VERSION: ${{ matrix.app == 'grafana' && env.CERT_MANAGER_VERSION || 'none' }}
+          CILIUM_VERSION: none
+          ARGOCD_VERSION: none
+        run: bash scripts/setup-k8s.sh
+
+      - name: Create secrets for ${{ matrix.app }}
+        if: matrix.app == 'grafana'
+        run: bash scripts/create-dev-secrets.sh
+
+      - name: Deploy ${{ matrix.app }}
+        run: make deploy APP=${{ matrix.app }}
+
+      - name: Wait for pods to be ready
+        timeout-minutes: 10
+        run: |
+          deployments=$(kubectl get deployments,statefulsets -n ${{ matrix.app }} -o name 2>/dev/null || true)
+
+          if [ -z "$deployments" ]; then
+            echo "No deployments or statefulsets found in namespace ${{ matrix.app }}"
+            exit 1
+          fi
+
+          for resource in $deployments; do
+            echo "Waiting for $resource..."
+            kubectl rollout status "$resource" -n ${{ matrix.app }} --timeout=9m
+          done
+
+          echo ""
+          echo "All workloads are ready."
+
+      - name: Show pod status
+        if: always()
+        run: |
+          echo "=== Pods ==="
+          kubectl get pods -n ${{ matrix.app }} -o wide
+          echo ""
+          echo "=== Events ==="
+          kubectl get events -n ${{ matrix.app }} --sort-by='.lastTimestamp'
+          echo ""
+          echo "=== Logs ==="
+          kubectl logs -n ${{ matrix.app }} --all-containers=true --prefix=true --tail=50 -l app.kubernetes.io/instance=${{ matrix.app }} || true
+
+      - name: Cleanup
+        if: always()
+        run: kubectl delete namespace ${{ matrix.app }} --ignore-not-found
