@@ -20,12 +20,12 @@ Renovateは自動的に以下を実行します:
 
 ### yamlfmt
 
-このリポジトリは、すべてのcomposeファイル間で一貫したYAMLフォーマットを確保するため、Goツール(`go.mod`で定義)として`yamlfmt`を使用しています。
+このリポジトリは、すべてのcomposeファイル間で一貫したYAMLフォーマットを確保するため、`.devcontainer/Dockerfile`でインストールされる`yamlfmt`を使用しています。
 
 フォーマッターを実行するには:
 
 ```bash
-go tool yamlfmt
+yamlfmt
 ```
 
 ## サービス管理

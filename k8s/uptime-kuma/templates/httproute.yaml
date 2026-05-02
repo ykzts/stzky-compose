@@ -1,0 +1,45 @@
+{{- if .Values.ingress.enabled }}
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: uptime-kuma
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app.kubernetes.io/name: uptime-kuma
+    app.kubernetes.io/instance: {{ .Release.Name }}
+spec:
+  parentRefs:
+    - name: {{ .Values.ingress.gateway.name }}
+      namespace: {{ .Values.ingress.gateway.namespace }}
+      sectionName: https
+  hostnames:
+    {{- range .Values.ingress.hostnames }}
+    - {{ . | quote }}
+    {{- end }}
+  rules:
+    - filters:
+        - type: ResponseHeaderModifier
+          responseHeaderModifier:
+            set:
+              - name: Cross-Origin-Embedder-Policy
+                value: require-cors
+              - name: Cross-Origin-Opener-Policy
+                value: same-origin
+              - name: Cross-Origin-Resource-Policy
+                value: same-origin
+              - name: Permissions-Policy
+                value: "camera=(), display-capture=(), geolocation=(), microphone=()"
+              - name: Referrer-Policy
+                value: no-referrer
+              - name: Strict-Transport-Security
+                value: max-age=31536000
+              - name: X-Content-Type-Options
+                value: nosniff
+              - name: X-Frame-Options
+                value: DENY
+            remove:
+              - Server
+      backendRefs:
+        - name: uptime-kuma
+          port: 3001
+{{- end }}

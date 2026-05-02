@@ -1,0 +1,19 @@
+image:
+  repository: ghcr.io/publira/epub-web
+  tag: "1.1.4"
+
+env:
+  maxUploadSize: "256"
+  maxPages: "500"
+  workers: "8"
+  requestTimeout: 90s
+  shutdownTimeout: 15s
+
+service: {}
+
+ingress:
+  enabled: true
+  hostname: epub.ykzts.com
+  gateway:
+    name: gateway
+    namespace: grafana

@@ -6,10 +6,10 @@
 
 ### YAMLフォーマット
 
-このプロジェクトでは、YAMLファイルのフォーマットに`yamlfmt`を使用しています。このツールは`go.mod`で指定されています。
+このプロジェクトでは、YAMLファイルのフォーマットに`yamlfmt`を使用しています。このツールは`.devcontainer/Dockerfile`でインストールされています。
 
 ```bash
-go tool yamlfmt
+yamlfmt
 ```
 
 変更をコミットする前に、必ずこのコマンドを実行してYAMLファイルをフォーマットしてください。

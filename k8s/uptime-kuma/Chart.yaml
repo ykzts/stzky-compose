@@ -1,0 +1,5 @@
+apiVersion: v2
+name: uptime-kuma
+description: Uptime Kuma with MariaDB chart
+type: application
+version: 0.1.0
