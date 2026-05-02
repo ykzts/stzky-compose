@@ -2,8 +2,9 @@ FROM mcr.microsoft.com/devcontainers/base:2.1.8-trixie@sha256:e389149057371298ea
 
 RUN apt-get update && apt-get install -y apache2-utils && rm -rf /var/lib/apt/lists/*
 
-# renovate: datasource=github-releases depName=kubectl packageName=kubernetes/kubernetes extractVersion=^v(?<version>.+)$
+# renovate: datasource=github-releases depName=kubectl packageName=kubernetes/kubernetes
 ARG KUBECTL_VERSION=1.36.0
+ENV KUBECTL_VERSION=${KUBECTL_VERSION}
 
 RUN \
   if [ "${KUBECTL_VERSION}" != "none" ]; then \
@@ -14,8 +15,9 @@ RUN \
     && rm kubectl kubectl.sha256; \
   fi
 
-# renovate: datasource=github-releases depNamea=argocd packageName=argoproj/argo-cd
+# renovate: datasource=github-releases depName=argocd packageName=argoproj/argo-cd
 ARG ARGOCD_VERSION=3.3.9
+ENV ARGOCD_VERSION=${ARGOCD_VERSION}
 
 RUN \
   if [ "${ARGOCD_VERSION}" != "none" ]; then \
@@ -26,6 +28,7 @@ RUN \
 
 # renovate: datasource=github-releases depName=helm packageName=helm/helm
 ARG HELM_VERSION=4.1.4
+ENV HELM_VERSION=${HELM_VERSION}
 
 RUN \
   if [ "${HELM_VERSION}" != "none" ]; then \
@@ -35,8 +38,9 @@ RUN \
     && rm -rf helm helm.tar.gz; \
   fi
 
-# renovate: datasource=github-releases depName=yamlfmt packageName=google/yamlfmt extractVersion=^v(?<version>.+)$
+# renovate: datasource=github-releases depName=yamlfmt packageName=google/yamlfmt
 ARG YAMLFMT_VERSION=0.21.0
+ENV YAMLFMT_VERSION=${YAMLFMT_VERSION}
 
 RUN \
   if [ "${YAMLFMT_VERSION}" != "none" ]; then \
@@ -45,3 +49,15 @@ RUN \
     && install yamlfmt /usr/local/bin/yamlfmt \
     && rm -f yamlfmt yamlfmt.tar.gz; \
   fi
+
+# renovate: datasource=github-releases depName=gateway-api packageName=kubernetes-sigs/gateway-api
+ARG GATEWAY_API_VERSION=1.2.1
+ENV GATEWAY_API_VERSION=${GATEWAY_API_VERSION}
+
+# renovate: datasource=helm depName=cilium packageName=cilium/cilium
+ARG CILIUM_VERSION=1.17.3
+ENV CILIUM_VERSION=${CILIUM_VERSION}
+
+# renovate: datasource=helm depName=cert-manager packageName=jetstack/cert-manager
+ARG CERT_MANAGER_VERSION=1.14.4
+ENV CERT_MANAGER_VERSION=${CERT_MANAGER_VERSION}
