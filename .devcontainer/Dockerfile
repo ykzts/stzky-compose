@@ -1,5 +1,7 @@
 FROM mcr.microsoft.com/devcontainers/base:2.1.8-trixie@sha256:e389149057371298eaeb72e736fc2c4dcb79974de222dd471d2e6d675d2f61c4
 
+RUN apt-get update && apt-get install -y apache2-utils && rm -rf /var/lib/apt/lists/*
+
 # renovate: datasource=github-releases depName=kubectl packageName=kubernetes/kubernetes extractVersion=^v(?<version>.+)$
 ARG KUBECTL_VERSION=1.35.2
 

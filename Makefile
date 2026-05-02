@@ -1,8 +1,12 @@
-.PHONY: setup-apps deploy
+.PHONY: setup-apps deploy create-dev-secrets
 
 setup-apps:
 	@echo "Applying Application definitions..."
 	kubectl apply -f k8s/apps/
+
+create-dev-secrets:
+	@echo "Creating development secrets..."
+	bash scripts/create-dev-secrets.sh
 
 deploy:
 	@if [ -z "$(APP)" ]; then \
