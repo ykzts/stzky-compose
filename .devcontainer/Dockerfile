@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/devcontainers/base:2.1.8-trixie@sha256:e389149057371298ea
 RUN apt-get update && apt-get install -y apache2-utils && rm -rf /var/lib/apt/lists/*
 
 # renovate: datasource=github-releases depName=kubectl packageName=kubernetes/kubernetes extractVersion=^v(?<version>.+)$
-ARG KUBECTL_VERSION=1.35.2
+ARG KUBECTL_VERSION=1.36.0
 
 RUN \
   if [ "${KUBECTL_VERSION}" != "none" ]; then \
