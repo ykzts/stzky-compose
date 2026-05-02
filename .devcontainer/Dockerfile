@@ -54,7 +54,7 @@ RUN \
 ARG GATEWAY_API_VERSION=1.2.1
 ENV GATEWAY_API_VERSION=${GATEWAY_API_VERSION}
 
-# renovate: datasource=helm depName=cilium packageName=cilium/cilium
+# renovate: datasource=github-releases depName=cilium packageName=cilium/cilium
 ARG CILIUM_VERSION=1.17.3
 ENV CILIUM_VERSION=${CILIUM_VERSION}
 
