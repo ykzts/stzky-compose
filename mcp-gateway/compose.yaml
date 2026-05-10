@@ -88,7 +88,7 @@ services:
       - no-new-privileges
 
   firecrawl-rabbitmq:
-    image: rabbitmq:3.13-management-alpine@sha256:606d8c0d6b3c18d1da9afc53bc7cdb2a8d5486df91b5a9830e9e07626c9ae281
+    image: rabbitmq:4.3-management-alpine@sha256:1a43764bdcf116542e7c8c794adc67c79461727da16d474e9e21483fe7f716d3
     init: true
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
