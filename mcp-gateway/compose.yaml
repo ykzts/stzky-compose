@@ -1,0 +1,126 @@
+services:
+  gateway:
+    image: docker/mcp-gateway:v0.42.1@sha256:582c83ba9b6032a6f495d0e98e7ff6442eebe89f7c476fa7672ce115911c99c5
+    ports:
+      - "8811:8811"
+    command:
+      - --transport=streaming
+      - --servers=firecrawl
+      - --port=8811
+      - --static=true
+    depends_on:
+      - mcp-firecrawl
+
+  mcp-firecrawl:
+    image: mcp/firecrawl@sha256:5339a9f677dbfdbfca37bd616e764d43f78b867720a1a57881edaa40ca097ca3
+    entrypoint: ["/docker-mcp/misc/docker-mcp-bridge", "node", "dist/index.js"]
+    environment:
+      - FIRECRAWL_API_URL=${FIRECRAWL_API_URL:-http://firecrawl:3002}
+      - FIRECRAWL_API_KEY=${FIRECRAWL_API_KEY:-}
+    depends_on:
+      firecrawl:
+        condition: service_started
+    init: true
+    cpus: 1
+    mem_limit: 2g
+    security_opt:
+      - no-new-privileges
+    labels:
+      - docker-mcp=true
+      - docker-mcp-tool-type=mcp
+      - docker-mcp-name=firecrawl
+      - docker-mcp-transport=stdio
+    volumes:
+      - type: image
+        source: docker/mcp-gateway
+        target: /docker-mcp
+
+  firecrawl:
+    image: ghcr.io/firecrawl/firecrawl:latest@sha256:89c19e85ac25b41d01819cb9a0727df0d8986382ab7116d2e92c40c8003fa9f1
+    command: ["node", "dist/src/harness.js", "--start-docker"]
+    environment:
+      - HOST=0.0.0.0
+      - PORT=3002
+      - USE_DB_AUTHENTICATION=false
+      - REDIS_URL=redis://firecrawl-redis:6379
+      - REDIS_RATE_LIMIT_URL=redis://firecrawl-redis:6379
+      - PLAYWRIGHT_MICROSERVICE_URL=http://firecrawl-playwright:3000/scrape
+      - NUQ_RABBITMQ_URL=amqp://firecrawl-rabbitmq:5672
+      - POSTGRES_HOST=firecrawl-postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER=${FIRECRAWL_POSTGRES_USER:-firecrawl}
+      - POSTGRES_PASSWORD=${FIRECRAWL_POSTGRES_PASSWORD:-firecrawl_password}
+      - POSTGRES_DB=${FIRECRAWL_POSTGRES_DB:-firecrawl}
+      - BULL_AUTH_KEY=${FIRECRAWL_BULL_AUTH_KEY:-CHANGEME}
+    depends_on:
+      firecrawl-redis:
+        condition: service_started
+      firecrawl-rabbitmq:
+        condition: service_healthy
+      firecrawl-playwright:
+        condition: service_started
+      firecrawl-postgres:
+        condition: service_healthy
+    restart: unless-stopped
+    init: true
+    cpus: 2
+    mem_limit: 4g
+    security_opt:
+      - no-new-privileges
+
+  firecrawl-playwright:
+    image: ghcr.io/firecrawl/playwright-service:latest@sha256:9e0737bc09df28275aab29726b1c0824a7725113945434e843385d487b7f7ec6
+    environment:
+      - PORT=3000
+    init: true
+    cpus: 1
+    mem_limit: 2g
+    security_opt:
+      - no-new-privileges
+
+  firecrawl-redis:
+    image: redis:7.4-alpine@sha256:6ab0b6e7381779332f97b8ca76193e45b0756f38d4c0dcda72dbb3c32061ab99
+    command: ["redis-server", "--bind", "0.0.0.0"]
+    init: true
+    cpus: 1
+    mem_limit: 1g
+    security_opt:
+      - no-new-privileges
+
+  firecrawl-rabbitmq:
+    image: rabbitmq:3.13-management-alpine@sha256:606d8c0d6b3c18d1da9afc53bc7cdb2a8d5486df91b5a9830e9e07626c9ae281
+    init: true
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    cpus: 1
+    mem_limit: 1g
+    security_opt:
+      - no-new-privileges
+
+  firecrawl-postgres:
+    image: ghcr.io/firecrawl/nuq-postgres:latest@sha256:f9388bd25ae2e1f1d034518236f993ce236173c1d8800ce24092ea6643a95a33
+    command: ["postgres", "-c", "cron.database_name=firecrawl"]
+    environment:
+      - POSTGRES_USER=${FIRECRAWL_POSTGRES_USER:-firecrawl}
+      - POSTGRES_PASSWORD=${FIRECRAWL_POSTGRES_PASSWORD:-firecrawl_password}
+      - POSTGRES_DB=${FIRECRAWL_POSTGRES_DB:-firecrawl}
+    volumes:
+      - firecrawl-nuq-postgres-data:/var/lib/postgresql/data
+    init: true
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${FIRECRAWL_POSTGRES_USER:-firecrawl} -d ${FIRECRAWL_POSTGRES_DB:-firecrawl}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    cpus: 1
+    mem_limit: 2g
+    security_opt:
+      - no-new-privileges
+
+volumes:
+  firecrawl-nuq-postgres-data:
