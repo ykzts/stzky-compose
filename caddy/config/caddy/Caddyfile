@@ -63,6 +63,21 @@ uptime.stzky.com, status.stzky.com, status.ykzts.com, status.ykzts.technology {
 	reverse_proxy :3001
 }
 
+mcp.stzky.com {
+	import secure-headers
+
+	@unauthorized {
+		not header Authorization "Bearer {$MCP_ACCESS_TOKEN}"
+	}
+
+	handle @unauthorized {
+		header Content-Type application/json
+		respond `{"error": "Unauthorized", "message": "Valid token required"}` 401
+	}
+
+	reverse_proxy :8811
+}
+
 epub.ykzts.com {
 	encode zstd gzip
 
