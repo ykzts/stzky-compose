@@ -67,7 +67,7 @@ mcp.stzky.com {
 	import secure-headers
 
 	@unauthorized {
-		not header Authorization "Bearer {$MCP_ACCESS_TOKEN}"
+		not header_regexp auth Authorization `^(?i:Bearer)\s+{$MCP_ACCESS_TOKEN}$`
 	}
 
 	handle @unauthorized {
