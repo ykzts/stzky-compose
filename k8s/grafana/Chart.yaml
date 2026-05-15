@@ -12,5 +12,5 @@ dependencies:
     version: 16.7.27
     repository: https://charts.bitnami.com/bitnami
   - name: valkey
-    version: 5.5.1
+    version: 5.6.5
     repository: https://charts.bitnami.com/bitnami
