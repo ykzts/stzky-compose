@@ -1,0 +1,20 @@
+---
+- Services:
+    - Immich:
+        description: Self-hosted photo and video backup solution.
+        href: https://photos.stzky.com/
+        icon: /images/icons/immich.png
+        siteMonitor: https://photos.stzky.com/api/server/ping
+
+- Infrastructure:
+    - Grafana:
+        description: Monitoring and observability.
+        href: https://graph.stzky.com/
+        icon: /images/icons/grafana.png
+        siteMonitor: https://graph.stzky.com/healthz
+
+    - Uptime Kuma:
+        description: Universal monitoring and observability.
+        href: https://uptime.stzky.com/
+        icon: /images/icons/uptime-kuma.svg
+        siteMonitor: https://uptime.stzky.com/

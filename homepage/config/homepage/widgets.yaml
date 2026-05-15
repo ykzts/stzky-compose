@@ -1,0 +1,10 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/configs/info-widgets/
+
+- datetime:
+    format:
+      dateStyle: short
+      hourCycle: h23
+      timeStyle: short
+    locale: ja-JP

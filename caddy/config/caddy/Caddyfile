@@ -18,6 +18,13 @@
 	}
 }
 
+stzky.com {
+  import secure-headers
+
+  encode zstd gzip
+  reverse_proxy :10000
+}
+
 console.stzky.com {
 	import secure-headers
 
