@@ -16,7 +16,7 @@ RUN \
   fi
 
 # renovate: datasource=github-releases depName=argocd packageName=argoproj/argo-cd
-ARG ARGOCD_VERSION=3.3.9
+ARG ARGOCD_VERSION=3.4.2
 ENV ARGOCD_VERSION=${ARGOCD_VERSION}
 
 RUN \
