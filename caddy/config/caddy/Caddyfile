@@ -22,7 +22,7 @@ stzky.com {
   import secure-headers
 
   encode zstd gzip
-  reverse_proxy homepage:10000
+  reverse_proxy homepage:3000
 }
 
 console.stzky.com {
