@@ -30,7 +30,7 @@ prometheus.scrape "immich_microservices" {
   job_name        = "immich_microservices"
   scrape_interval = "15s"
   targets         = [
-    {"__address__" = "immich-server:8082", group = "immich", service = "immich-microservices"},
+    {"__address__" = "immich-server:8002", group = "immich", service = "immich-microservices"},
   ]
 }
 
