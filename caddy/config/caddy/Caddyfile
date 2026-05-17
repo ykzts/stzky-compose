@@ -18,10 +18,14 @@
 	}
 }
 
-stzky.com {
+stzky.com, www.stzky.com {
   import secure-headers
 
   encode zstd gzip
+
+  @www host www.stzky.com
+  redir @www https://stzky.com{uri} permanent
+
   reverse_proxy homepage:3000
 }
 
