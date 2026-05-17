@@ -94,8 +94,6 @@ services:
     networks:
       - default
       - stzky-ingress
-    ports:
-      - 127.0.0.1:9090:9090
     volumes:
       - ./config/prometheus:/etc/prometheus:ro
       - /opt/grafana/prometheus:/prometheus
