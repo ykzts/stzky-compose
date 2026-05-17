@@ -27,7 +27,7 @@ RUN \
   fi
 
 # renovate: datasource=github-releases depName=helm packageName=helm/helm
-ARG HELM_VERSION=4.1.4
+ARG HELM_VERSION=4.2.0
 ENV HELM_VERSION=${HELM_VERSION}
 
 RUN \
