@@ -27,6 +27,11 @@ services:
       UPTIME_KUMA_DB_TYPE: mariadb
       UPTIME_KUMA_DB_USERNAME: ${MYSQL_USER}
     image: ghcr.io/louislam/uptime-kuma:2.3.2@sha256:9aeb4e51d038047f414309c77a1af553281ca535723cb88907d907269d0a908e
-    ports:
-      - 127.0.0.1:3001:3001
+    networks:
+      - default
+      - stzky-ingress
     restart: always
+
+networks:
+  stzky-ingress:
+    external: true

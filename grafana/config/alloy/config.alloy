@@ -12,7 +12,7 @@ prometheus.scrape "caddy_metrics" {
   job_name        = "caddy"
   scrape_interval = "15s"
   targets         = [
-    {"__address__" = "localhost:2019", group = "infrastructure", service = "caddy"},
+    {"__address__" = "caddy:2019", group = "infrastructure", service = "caddy"},
   ]
 }
 
@@ -21,7 +21,7 @@ prometheus.scrape "immich_api" {
   job_name        = "immich_api"
   scrape_interval = "15s"
   targets         = [
-    {"__address__" = "localhost:8081", group = "immich", service = "immich-api"},
+    {"__address__" = "immich-server:8081", group = "immich", service = "immich-api"},
   ]
 }
 
@@ -30,17 +30,12 @@ prometheus.scrape "immich_microservices" {
   job_name        = "immich_microservices"
   scrape_interval = "15s"
   targets         = [
-    {"__address__" = "localhost:8082", group = "immich", service = "immich-microservices"},
+    {"__address__" = "immich-server:8082", group = "immich", service = "immich-microservices"},
   ]
 }
 
 prometheus.remote_write "default" {
   endpoint {
-    url = "https://prometheus.stzky.com/api/v1/write"
-
-    basic_auth {
-      username = sys.env("ALLOY_PROMETHEUS_USERNAME")
-      password = sys.env("ALLOY_PROMETHEUS_PASSWORD")
-    }
+    url = "http://prometheus:9090/api/v1/write"
   }
 }
