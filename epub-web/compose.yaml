@@ -11,6 +11,11 @@ services:
       EPUB_WEB_REQUEST_TIMEOUT: 90s
       EPUB_WEB_SHUTDOWN_TIMEOUT: 15s
     image: ghcr.io/publira/epub-web:1.1.4@sha256:617baa62bdb9b5d66ea45da2a8ec9ea51f363d464c4692803aa598728a18eaec
-    ports:
-      - 127.0.0.1:8085:8080
+    networks:
+      - stzky-ingress
+      - default
     restart: always
+
+networks:
+  stzky-ingress:
+    external: true

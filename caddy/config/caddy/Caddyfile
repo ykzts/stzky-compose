@@ -22,14 +22,14 @@ stzky.com {
   import secure-headers
 
   encode zstd gzip
-  reverse_proxy :10000
+  reverse_proxy homepage:10000
 }
 
 console.stzky.com {
 	import secure-headers
 
 	encode zstd gzip
-	reverse_proxy :9000
+	reverse_proxy host.docker.internal:9000
 }
 
 graph.stzky.com {
@@ -38,7 +38,7 @@ graph.stzky.com {
 	encode zstd gzip
 	header {
 	}
-	reverse_proxy :3000
+	reverse_proxy grafana:3000
 }
 
 photos.stzky.com {
@@ -50,7 +50,7 @@ photos.stzky.com {
 		Permissions-Policy "camera=(), display-capture=(), geolocation=(self), microphone=()"
 		-X-Powered-By
 	}
-	reverse_proxy :2283
+	reverse_proxy immich-server:2283
 }
 
 prometheus.stzky.com {
@@ -60,14 +60,14 @@ prometheus.stzky.com {
 		{$PROMETHEUS_AUTH_USERNAME} {$PROMETHEUS_HASHED_PASSWORD}
 	}
 	encode zstd gzip
-	reverse_proxy :9090
+	reverse_proxy prometheus:9090
 }
 
 uptime.stzky.com, status.stzky.com, status.ykzts.com, status.ykzts.technology {
 	import secure-headers
 
 	encode zstd gzip
-	reverse_proxy :3001
+	reverse_proxy uptime-kuma:3001
 }
 
 mcp.stzky.com {
@@ -82,13 +82,13 @@ mcp.stzky.com {
 		respond `{"error": "Unauthorized", "message": "Valid token required"}` 401
 	}
 
-	reverse_proxy :8811
+	reverse_proxy gateway:8811
 }
 
 epub.ykzts.com {
 	encode zstd gzip
 
-	reverse_proxy :8085 {
+	reverse_proxy epub-web:8085 {
 		transport http {
 			versions h2c 2
 		}

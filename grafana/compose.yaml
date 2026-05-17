@@ -9,7 +9,9 @@ services:
       - ALLOY_PROMETHEUS_PASSWORD=${ALLOY_PROMETHEUS_PASSWORD}
       - ALLOY_PROMETHEUS_USERNAME=${ALLOY_PROMETHEUS_USERNAME}
     image: grafana/alloy:v1.16.0@sha256:6e00cf7c5a692ff5f24844529416ed017d76fce922f8199004e73d5eca46b6b8
-    network_mode: host
+    networks:
+      - default
+      - stzky-ingress
     restart: always
     volumes:
       - ./config/alloy:/etc/alloy:ro
@@ -57,8 +59,9 @@ services:
       - GF_SNAPSHOTS_EXTERNAL_ENABLED=false
       - GF_USERS_DEFAULT_THEME=system
     image: grafana/grafana:13.0.1@sha256:0f86bada30d65ef9d0183b90c1e2682ac92d53d95da8bed322b984ea78a4a73a
-    ports:
-      - 127.0.0.1:3000:3000
+    networks:
+      - default
+      - stzky-ingress
     restart: always
     user: '0'
     volumes:
@@ -88,6 +91,9 @@ services:
       - --web.enable-remote-write-receiver
     container_name: prometheus
     image: prom/prometheus:v3.11.3@sha256:e4254400b85610324913f0dc4acf92603d9984e7519414c5a12811aa6146acc3
+    networks:
+      - default
+      - stzky-ingress
     ports:
       - 127.0.0.1:9090:9090
     volumes:
@@ -107,3 +113,7 @@ services:
     container_name: snmp_exporter
     image: prom/snmp-exporter:v0.30.1@sha256:e5fd5e8b43ace6c088fe9bf0b37b7fff0e04380bee352be7ec41b853a4dd5859
     restart: always
+
+networks:
+  stzky-ingress:
+    external: true

@@ -1,8 +1,9 @@
 services:
   gateway:
     image: docker/mcp-gateway:v0.42.1@sha256:582c83ba9b6032a6f495d0e98e7ff6442eebe89f7c476fa7672ce115911c99c5
-    ports:
-      - "8811:8811"
+    networks:
+      - default
+      - stzky-ingress
     command:
       - --transport=streaming
       - --servers=firecrawl
@@ -124,3 +125,7 @@ services:
 
 volumes:
   firecrawl-nuq-postgres-data:
+
+networks:
+  stzky-ingress:
+    external: true
